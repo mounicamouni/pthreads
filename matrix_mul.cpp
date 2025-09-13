@@ -5,7 +5,7 @@
 #include <time.h>
 #include<pthread.h>
 
-int** mat_mul(int **arr1, int **arr2, int n){
+int** mat_mul(int **arr1,int **arr2,int n){
 	int **sum = (int **)malloc(sizeof(int*)*n);
 	for (int i = 0; i < n; i++){
 		sum[i] = (int *)malloc(sizeof(int)*n);
@@ -18,19 +18,26 @@ int** mat_mul(int **arr1, int **arr2, int n){
 			}
 		}
 	}
-
+	/*for (int i = 0; i < n; i++){
+		for (int j = 0; j < n; j++){
+			printf("%d ", sum[i][j]);
+		}
+		printf("\n");
+	}
+*/
+	printf("hrlllo");
 	return sum;
 }
 
 int **arr1;
 int **arr2;
-int n, part = 0;
+int n,part=0;
 int **sum;
 int no_threads;
 pthread_mutex_t mutex;
 void * mat_mul_threads(void *vargs){
 	int *a = ((int*)vargs);
-
+	
 	int x = *a;
 	*a = *a + 1;
 	printf("%d \n", *a);
@@ -43,7 +50,8 @@ void * mat_mul_threads(void *vargs){
 			}
 		}
 	}
-
+	
+	printf("hrlllo");
 	return NULL;
 }
 
@@ -71,14 +79,14 @@ int main(){
 			arr2[i][j] = i;
 		}
 	}
-
+	
 	clock_t t;
 	t = clock();
 	pthread_t thread[10];
 	for (int i = 0; i < no_threads; i++)
-		pthread_create(&thread[i], NULL, mat_mul_threads, (void*)&part);
+			pthread_create(&thread[i], NULL, mat_mul_threads, (void*)&part);
 	for (int i = 0; i < no_threads; i++)
-		pthread_join(thread[i], NULL);
+			pthread_join(thread[i], NULL);
 
 
 	t = clock() - t;
@@ -89,8 +97,8 @@ int main(){
 
 	clock_t t1;
 	t1 = clock();
-
-	mat_mul(arr1, arr2, n);
+	
+	mat_mul(arr1,arr2,n);
 
 	t1 = clock() - t1;
 	double time_taken1 = ((double)t1) / CLOCKS_PER_SEC;
